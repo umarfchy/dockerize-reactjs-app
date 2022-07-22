@@ -47,3 +47,74 @@ Now, we'll copy all contents of `/build` directory of the image environment in s
 COPY --from=builder /app/build .
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
 ```
+
+So, let's start by creating our first image. We can check if an image or container is already present using the following commands
+To check for images
+```bash 
+docker images 
+```
+<img src="./demo/002.png" alt="002.png"/>
+
+To check for running and stopped containers
+```bash 
+docker ps
+docker ps -a 
+```
+<img src="./demo/001.png" alt="001.png"/>
+
+No results were shown suggesting that no container is present. Now, we need to be in the root directory (`/dockerize-reactjs-app`) of the app to start building our image. 
+```bash 
+docker build -t react-nginx:1 . 
+```
+This will show the following output in the terminal. 
+
+<img src="./demo/003.png" alt="003.png"/>
+<img src="./demo/004.png" alt="004.png"/>
+<img src="./demo/005.png" alt="005.png"/>
+<img src="./demo/006.png" alt="006.png"/>
+ 
+ You can see above that the overall build process was divided into 12 steps. Once the build process is done you can see the image using the following 
+
+```bash
+docker images
+```
+<img src="./demo/007.png" alt="007.png"/>
+
+You can see that a new repository was created by the name `react-nginx` with an image id of `d01fb5c13587`. We'll be using this image id to create our image. Now, in order to build the container from our image file we need to add the following command 
+
+```bash 
+docker run d01fb5c13587
+```
+This will use the image with d01fb5c13587 to build the container. Althogh this command will spin up the image we wont be able to see the web app as the container by default inaccessible to outside. So, we need to expose a port of the container and map it to our local machine's port to see our app in action. we will map port 7001 of our local machine to container's port 80 as nginx by deafult listens to port 80.
+```bash 
+docker run -p 7001:80 d01fb5c13587
+```
+<img src="./demo/008.png" alt="008.png"/>
+
+Now, if you open the browser and type http://localhost:7001/ you'll see the deployed app. Hurray, you've done it!
+
+![Alt Text](./demo/demo-app.gif)
+
+You can type `Ctrl + C` to stop the container. To check the stopped container type 
+```bash
+docker ps -a
+```
+<img src="./demo/009.png" alt="009.png"/>
+
+Now, if you want to get rid of the container, you need to use the following
+
+```bash
+docker rm 8c270816ffbb
+```
+where `8c270816ffbb` is the container id.
+By doing this the container will be removed.
+<img src="./demo/010.png" alt="010.png"/>
+<img src="./demo/011.png" alt="011.png"/>
+We can also remove the image that was used to create the container using the following command
+
+```bash
+docker rmi d01fb5c13587
+```
+<img src="./demo/012.png" alt="012.png"/>
+
+This will remove the image. 
