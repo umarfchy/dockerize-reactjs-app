@@ -121,4 +121,10 @@ docker rmi d01fb5c13587
 
 This will remove the image. 
 
+Also, you can directly use the `docker-compose.yml` file to create the image and spin up the container just by using following command:-
+
+```bash
+docker compose up
+```
+
 THANKS FOR READING
